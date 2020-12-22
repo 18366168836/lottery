@@ -138,10 +138,11 @@ router.post("/errorData", (req, res, next) => {
 // 保存数据到excel中去
 router.post("/export", (req, res, next) => {
   let type = [1, 2, 3, 4, 5, defaultType],
-    outData = [["工号", "姓名", "部门"]];
+    outData = [["班级", "姓名", "学号"]];
   cfg.prizes.forEach(item => {
-    outData.push([item.text]);
-    outData = outData.concat(luckyData[item.type] || []);
+	outData.push([item.text]);
+	const ret = Array.isArray(luckyData[item.type]) ? luckyData[item.type].map(arr => arr.slice(0, arr.length - 1)) : []
+    outData = outData.concat(ret);
   });
 
   writeXML(outData, "/抽奖结果.xlsx")
@@ -229,17 +230,17 @@ function getLeftUsers() {
   for (let key in luckyData) {
     let luckys = luckyData[key];
     luckys.forEach(item => {
-      lotteredUser[item[0]] = true;
+      lotteredUser[item[3]] = true;
     });
   }
   // 记录当前已抽取但是不在线人员
   errorData.forEach(item => {
-    lotteredUser[item[0]] = true;
+    lotteredUser[item[3]] = true;
   });
 
   let leftUsers = Object.assign([], curData.users);
   leftUsers = leftUsers.filter(user => {
-    return !lotteredUser[user[0]];
+    return !lotteredUser[user[3]];
   });
   curData.leftUsers = leftUsers;
 }

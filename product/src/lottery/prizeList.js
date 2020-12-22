@@ -155,14 +155,15 @@ function setPrizes(pri) {
 
 function showPrizeList(currentPrizeIndex) {
   let currentPrize = prizes[currentPrizeIndex];
-  if (currentPrize.type === defaultType) {
-    currentPrize.count === "不限制";
-  }
-  let htmlCode = `<div class="prize-mess">正在抽取<label id="prizeType" class="prize-shine">${currentPrize.text}</label><label id="prizeText" class="prize-shine">${currentPrize.title}</label>，剩余<label id="prizeLeft" class="prize-shine">${currentPrize.count}</label>个</div><ul class="prize-list">`;
+//   if (currentPrize.type === defaultType) {
+//     currentPrize.count === "不限制";
+//   }
+  const titleCode = `<div class="prize-mess">正在抽取<label id="prizeType" class="prize-shine">${currentPrize.text}</label><label id="prizeText" class="prize-shine">${currentPrize.title}</label>，剩余<label id="prizeLeft" class="prize-shine">${currentPrize.count}</label>个</div><ul class="prize-list">`;
+  let htmlCode = ''
   prizes.forEach(item => {
-    if (item.type === defaultType) {
-      return true;
-    }
+    // if (item.type === defaultType) {
+    //   return true;
+    // }
     htmlCode += `<li id="prize-item-${item.type}" class="prize-item ${
       item.type == currentPrize.type ? "shine" : ""
     }">
@@ -191,6 +192,7 @@ function showPrizeList(currentPrizeIndex) {
   });
   htmlCode += `</ul>`;
 
+  document.querySelector("#titleBar").innerHTML = titleCode;
   document.querySelector("#prizeBar").innerHTML = htmlCode;
 }
 
@@ -206,7 +208,7 @@ let setPrizeData = (function() {
       type = currentPrize.type,
       elements = prizeElement[type],
       totalCount = currentPrize.count;
-
+	
     if (!elements) {
       elements = {
         box: document.querySelector(`#prize-item-${type}`),
@@ -245,12 +247,12 @@ let setPrizeData = (function() {
       lasetPrizeIndex = currentPrizeIndex;
     }
 
-    if (currentPrizeIndex === 0) {
-      prizeElement.prizeType.textContent = "特别奖";
-      prizeElement.prizeText.textContent = " ";
-      prizeElement.prizeLeft.textContent = "不限制";
-      return;
-    }
+    // if (currentPrizeIndex === 0) {
+    //   prizeElement.prizeType.textContent = "特别奖";
+    //   prizeElement.prizeText.textContent = " ";
+    //   prizeElement.prizeLeft.textContent = "不限制";
+    //   return;
+    // }
 
     count = totalCount - count;
     let percent = (count / totalCount).toFixed(2);

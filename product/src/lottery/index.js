@@ -59,54 +59,59 @@ initAll();
  * 初始化所有DOM
  */
 function initAll() {
-  window.AJAX({
-    url: "/getTempData",
-    success(data) {
-      // 获取基础数据
-      prizes = data.cfgData.prizes;
-      EACH_COUNT = data.cfgData.EACH_COUNT;
-      COMPANY = data.cfgData.COMPANY;
-      HIGHLIGHT_CELL = createHighlight();
-      basicData.prizes = prizes;
-      setPrizes(prizes);
+	
+	window.AJAX({
+		url: "/getTempData",
+		success(data) {
+		// 获取基础数据
+		prizes = data.cfgData.prizes;
+		EACH_COUNT = data.cfgData.EACH_COUNT;
+		COMPANY = data.cfgData.COMPANY;
+		HIGHLIGHT_CELL = createHighlight();
+		basicData.prizes = prizes;
+		setPrizes(prizes);
 
-      TOTAL_CARDS = ROW_COUNT * COLUMN_COUNT;
+		TOTAL_CARDS = ROW_COUNT * COLUMN_COUNT;
 
-      // 读取当前已设置的抽奖结果
-      basicData.leftUsers = data.leftUsers;
-      basicData.luckyUsers = data.luckyData;
+		// 读取当前已设置的抽奖结果
+		basicData.leftUsers = data.leftUsers;
+		basicData.luckyUsers = data.luckyData;
 
-      let prizeIndex = basicData.prizes.length - 1;
-      for (; prizeIndex > -1; prizeIndex--) {
-        if (
-          data.luckyData[prizeIndex] &&
-          data.luckyData[prizeIndex].length >=
-            basicData.prizes[prizeIndex].count
-        ) {
-          continue;
-        }
-        currentPrizeIndex = prizeIndex;
-        currentPrize = basicData.prizes[currentPrizeIndex];
-        break;
-      }
+		let prizeIndex = basicData.prizes.length - 1;
+		for (; prizeIndex > -1; prizeIndex--) {
+			const prizeItem = basicData.prizes[prizeIndex]
+			if (
+			data.luckyData[prizeItem.type] &&
+			data.luckyData[prizeItem.type].length >=
+			prizeItem.count
+			) {
+			continue;
+			}
+			currentPrizeIndex = prizeIndex;
+			
+			break;
+		}
+		if (currentPrizeIndex === undefined) {
+			currentPrizeIndex = 0
+		}
+		currentPrize = basicData.prizes[currentPrizeIndex];
+		showPrizeList(currentPrizeIndex);
+		let curLucks = basicData.luckyUsers[currentPrize.type];
+		setPrizeData(currentPrizeIndex, curLucks ? curLucks.length : 0, true);
+		}
+	});
 
-      showPrizeList(currentPrizeIndex);
-      let curLucks = basicData.luckyUsers[currentPrize.type];
-      setPrizeData(currentPrizeIndex, curLucks ? curLucks.length : 0, true);
-    }
-  });
+	window.AJAX({
+		url: "/getUsers",
+		success(data) {
+		basicData.users = data;
 
-  window.AJAX({
-    url: "/getUsers",
-    success(data) {
-      basicData.users = data;
-
-      initCards();
-      // startMaoPao();
-      animate();
-      shineCard();
-    }
-  });
+		initCards();
+		// startMaoPao();
+		animate();
+		shineCard();
+		}
+	});
 }
 
 function initCards() {
@@ -152,7 +157,7 @@ function initCards() {
       //
 
       var object = new THREE.Object3D();
-      object.position.x = j * 140 - position.x;
+      object.position.x = j * 130 - position.x;
       object.position.y = -(i * 180) + position.y;
       targets.table.push(object);
       index++;
@@ -201,21 +206,20 @@ function setLotteryStatus(status = false) {
 /**
  * 事件绑定
  */
-function bindEvent() {
-  document.querySelector("#menu").addEventListener("click", function(e) {
-    e.stopPropagation();
+function handleEvent (target) {
+	
     // 如果正在抽奖，则禁止一切操作
     if (isLotting) {
       addQipao("抽慢一点点～～");
       return false;
     }
 
-    let target = e.target.id;
+    
     switch (target) {
       // 显示数字墙
       case "welcome":
         switchScreen("enter");
-        rotate = false;
+		rotate = false;
         break;
       // 进入抽奖
       case "enter":
@@ -249,16 +253,26 @@ function bindEvent() {
         break;
       // 抽奖
       case "lottery":
+		  if (btns.lotteryBar.classList.contains("none")) {
+			  return handleEvent('enter')
+		  }
+		if (currentPrizeIndex === 0 && Array.isArray(basicData.luckyUsers[currentPrize.type]) && currentPrize.count === basicData.luckyUsers[currentPrize.type].length) {
+			resetCard()
+			return addQipao(`奖品已经抽完了。`);
+		} else {
+			addQipao(`正在抽取[${currentPrize.title}],调整好姿势`);
+		}
         setLotteryStatus(true);
-        // 每次抽奖前先保存上一次的抽奖数据
-        saveData();
+		
         //更新剩余抽奖数目的数据显示
         changePrize();
         resetCard().then(res => {
           // 抽奖
-          lottery();
-        });
-        addQipao(`正在抽取[${currentPrize.title}],调整好姿势`);
+		  lottery();
+		  
+		});
+		
+        
         break;
       // 重新抽奖
       case "reLottery":
@@ -288,9 +302,34 @@ function bindEvent() {
         });
         break;
     }
-  });
+}
+function bindEvent() {
+	document.querySelector("#menu").addEventListener("click", (e) => {
+		e.stopPropagation();
+		let target = e.target.id;
+		handleEvent(target)
+	});
+	window.addEventListener("keyup", (e) => {
+		console.log('e', e)
+		let target = ''
+		switch(e.key) {
+			case ' ': target = 'lottery'; break
+			case 'r': target = 'reset'; break
+			case 'd': target = 'save'; break
+			case 'w': target = 'welcome'; break
+			
+			// case ' ': target = ''; break
+			// case ' ': target = ''; break
+		}
+		// e.stopPropagation();
+		// let target = e.target.id;
+		if (target) {
+			handleEvent(target)
+		}
+		
+	});
 
-  window.addEventListener("resize", onWindowResize, false);
+	window.addEventListener("resize", onWindowResize, false);
 }
 
 function switchScreen(type) {
@@ -449,7 +488,7 @@ function render() {
 
 function selectCard(duration = 600) {
   rotate = false;
-  let width = 140,
+  let width = currentLuckys.length >= 15 ? 102 : 160,
     tag = -(currentLuckys.length - 1) / 2,
     locates = [];
 
@@ -591,10 +630,15 @@ function lottery() {
     // 将之前的记录置空
     currentLuckys = [];
     selectedCardIndex = [];
-    // 当前同时抽取的数目,当前奖品抽完还可以继续抽，但是不记录数据
+	// 当前同时抽取的数目,当前奖品抽完还可以继续抽，但是不记录数据
+	const totalCount = currentPrize.count
+	let luckys = basicData.luckyUsers[currentPrize.type];
+
     let perCount = EACH_COUNT[currentPrizeIndex],
       leftCount = basicData.leftUsers.length;
-
+	if (perCount + (Array.isArray(luckys) ? luckys.length : 0) > totalCount) {
+		perCount = totalCount - luckys.length
+	}
     if (leftCount === 0) {
       addQipao("人员已抽完，现在重新设置所有人员可以进行二次抽奖！");
       basicData.leftUsers = basicData.users;
@@ -614,7 +658,9 @@ function lottery() {
     }
 
     // console.log(currentLuckys);
-    selectCard();
+	selectCard();
+	// 抽奖后保存抽奖数据
+	saveData();
   });
 }
 
@@ -651,7 +697,9 @@ function saveData() {
 
 function changePrize() {
   let luckys = basicData.luckyUsers[currentPrize.type];
+  const count = currentPrize.count
   let luckyCount = (luckys ? luckys.length : 0) + EACH_COUNT[currentPrizeIndex];
+  luckyCount = luckyCount > count ? count : luckyCount
   // 修改左侧prize的数目和百分比
   setPrizeData(currentPrizeIndex, luckyCount);
 }
@@ -668,6 +716,9 @@ function random(num) {
  * 切换名牌人员信息
  */
 function changeCard(cardIndex, user) {
+	if (!user) {
+		return
+	}
   let card = threeDCards[cardIndex].element;
 
   card.innerHTML = `<div class="company">${COMPANY}</div><div class="name">${
@@ -767,7 +818,7 @@ function reset() {
 }
 
 function createHighlight() {
-  let year = new Date().getFullYear() + "";
+  let year = '2021'//new Date().getFullYear() + "";
   let step = 4,
     xoffset = 1,
     yoffset = 1,
