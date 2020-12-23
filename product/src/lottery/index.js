@@ -216,7 +216,10 @@ function handleEvent (target) {
 
     
     switch (target) {
-      // 显示数字墙
+	  // 显示数字墙
+	  case "resetCards": 
+		resetCard()
+		break;
       case "welcome":
         switchScreen("enter");
 		rotate = false;
@@ -292,14 +295,12 @@ function handleEvent (target) {
         break;
       // 导出抽奖结果
       case "save":
-        saveData().then(res => {
-          resetCard().then(res => {
+		resetCard().then(res => {
             // 将之前的记录置空
             currentLuckys = [];
-          });
-          exportData();
-          addQipao(`数据已保存到EXCEL中。`);
-        });
+		});
+		exportData();
+		addQipao(`数据已保存到EXCEL中。`);
         break;
     }
 }
@@ -317,6 +318,7 @@ function bindEvent() {
 			case 'r': target = 'reset'; break
 			case 'd': target = 'save'; break
 			case 'w': target = 'welcome'; break
+			case 'h': target = 'resetCards'; break
 			
 			// case ' ': target = ''; break
 			// case ' ': target = ''; break
@@ -635,10 +637,14 @@ function lottery() {
 	let luckys = basicData.luckyUsers[currentPrize.type];
 
     let perCount = EACH_COUNT[currentPrizeIndex],
-      leftCount = basicData.leftUsers.length;
+	  leftCount = basicData.leftUsers.length;
 	if (perCount + (Array.isArray(luckys) ? luckys.length : 0) > totalCount) {
 		perCount = totalCount - luckys.length
 	}
+	if (Array.isArray(luckys) && luckys.length >= totalCount) {
+		return
+	} 
+	
     if (leftCount === 0) {
       addQipao("人员已抽完，现在重新设置所有人员可以进行二次抽奖！");
       basicData.leftUsers = basicData.users;
