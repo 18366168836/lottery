@@ -5,15 +5,13 @@
 	<title>年会抽奖</title>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-	<!-- <link rel="stylesheet" href="./index.css"> -->
+
+	<link rel="stylesheet" href="./css/animate.min.css">
+	<link rel="stylesheet" href="./css/index.css">
 </head>
 
-<body>
-	<script src="./lib/three.min.js"></script>
-	<script src="./lib/tween.min.js"></script>
-	<script src="./lib/TrackballControls.js"></script>
-	<script src="./lib/CSS3DRenderer.js"></script>
-	<script src="./lib/ajax.js"></script>
+<body style="background-color: linear-gradient(to bottom, #131313 0%, #02101c 100%);">
+
 
 	<div class="canvas-box">
 		<canvas id="canvas">你的浏览器不支持canvas</canvas>
@@ -29,7 +27,7 @@
 
 	<div id="container"></div>
 
-	<div id="menu">
+	<div id="menu" style="display: none;">
 		<button id="enter">进入抽奖</button>
 		<div id="lotteryBar" class="none">
 			<button id="lottery">抽奖</button>
@@ -40,6 +38,11 @@
 	</div>
 
 	<div class="qipao-container"></div>
+	<script src="./lib/three.min.js"></script>
+	<script src="./lib/tween.min.js"></script>
+	<script src="./lib/TrackballControls.js"></script>
+	<script src="./lib/CSS3DRenderer.js"></script>
+	<script src="./lib/ajax.js"></script>
 </body>
 
 </html>

@@ -1,10 +1,10 @@
+const path = require('path')
 const express = require("express");
 const opn = require("opn");
 const bodyParser = require("body-parser");
-const path = require("path");
 const chokidar = require("chokidar");
 const cfg = require("./config");
-
+const DONE = require('../const').done
 const {
   loadXML,
   loadTempData,
@@ -221,7 +221,7 @@ function loadData() {
     })
     .catch(data => {
       curData.leftUsers = Object.assign([], curData.users);
-    });
+	});
 }
 
 function getLeftUsers() {
@@ -267,8 +267,11 @@ module.exports = {
     let server = app.listen(port, () => {
       let host = server.address().address;
       let port = server.address().port;
-      global.console.log(`lottery server listenig at http://${host}:${port}`);
-      openBrowser && opn(`http://127.0.0.1:${port}`);
+	  global.console.log(`lottery server listenig at http://${host}:${port}`);
+	  setTimeout(() => {
+		global.console.log(DONE)
+	  })
+    //   openBrowser && opn(`http://127.0.0.1:${port}`);
     });
   }
 };

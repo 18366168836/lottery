@@ -1,0 +1,13 @@
+{
+	"name": "lucky",
+	"version": "1.0.0",
+	"description": "抽奖",
+	"main": "index.js",
+	"scripts": {
+		"start": "node index"
+	},
+	"author": "moshang",
+	"license": "ISC",
+	"devDependencies": {},
+	"dependencies": {}
+}

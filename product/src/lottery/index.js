@@ -1,5 +1,5 @@
-import "./index.css";
-import "../css/animate.min.css";
+// import "./index.css";
+// import "../css/animate.min.css";
 import "./canvas.js";
 import {
   addQipao,
@@ -124,7 +124,7 @@ function initCards() {
     index = 0,
     totalMember = member.length,
     position = {
-      x: (140 * COLUMN_COUNT - 20) / 2,
+      x: (100 * COLUMN_COUNT - 20) / 2,
       y: (180 * ROW_COUNT - 20) / 2
     };
 
@@ -157,7 +157,7 @@ function initCards() {
       //
 
       var object = new THREE.Object3D();
-      object.position.x = j * 130 - position.x;
+      object.position.x = j * 120 - position.x;
       object.position.y = -(i * 180) + position.y;
       targets.table.push(object);
       index++;
