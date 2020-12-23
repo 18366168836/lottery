@@ -41,12 +41,12 @@ app.use(
 if (process.argv.length > 2) {
   port = process.argv[2];
 }
-
-app.use(express.static(cwd));
+console.log('cwd', cwd)
+app.use(express.static('www'));
 
 //请求地址为空，默认重定向到index.html文件
 app.get("/", (req, res) => {
-  res.redirect(301, "index.html");
+  	res.redirect(301, "index.html");
 });
 
 //设置跨域访问
@@ -145,7 +145,7 @@ router.post("/export", (req, res, next) => {
     outData = outData.concat(ret);
   });
 
-  writeXML(outData, "/抽奖结果.xlsx")
+  writeXML(outData, "/www/抽奖结果.xlsx")
     .then(dt => {
       // res.download('/抽奖结果.xlsx');
       res.status(200).json({
@@ -271,7 +271,7 @@ module.exports = {
 	  setTimeout(() => {
 		global.console.log(DONE)
 	  })
-    //   openBrowser && opn(`http://127.0.0.1:${port}`);
+      openBrowser && opn(`http://127.0.0.1:${port}`);
     });
   }
 };

@@ -18,28 +18,28 @@ const prizes = [
     count: 5,
     text: "钻石苹果奖",
     title: "水晶小苹果",
-    img: "../img/secrit.jpg"
+    img: "../img/1.jpg"
   },
   {
     type: 2,
     count: 15,
     text: "人才辈出奖",
     title: "大容量笔袋",
-    img: "../img/mbp.jpg"
+    img: "../img/2.jpg"
   },
   {
     type: 3,
     count: 25,
     text: "星光璀璨奖",
     title: "加厚皮笔记本",
-    img: "../img/huawei.png"
+    img: "../img/3.jpg"
   },
   {
     type: 4,
     count: 50,
     text: "真我风采奖",
     title: "得力金属笔筒",
-    img: "../img/ipad.jpg"
+    img: "../img/4.jpg"
   },
 ];
 

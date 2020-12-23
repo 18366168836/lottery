@@ -1,5 +1,6 @@
 #npm
 node_modules/
 dist/
+www/
 temp.json
 error.json

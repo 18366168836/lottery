@@ -435,6 +435,10 @@ button:active {
     height: 100%;
 }
 
+.color-red {
+    color: #db5c58;
+}
+
 .prize-shine {
     font-size: 5vh;
     font-weight: bold;

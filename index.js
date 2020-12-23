@@ -11,21 +11,21 @@ cp.on('error', (e) => {
 cp.stdout.on('data', data => {
 	const str = data.toString()
 	console.log('data: ', str)
-	if (new RegExp('^'+DONE).test(str)) {
-		console.log('开始启动抽奖页面')
-		const pageProcess = childProcess.spawn('npm.cmd', ['run', 'dev'], {
-			cwd: path.resolve(__dirname, './product')
-		})
-		pageProcess.on('error', (e) => {
-			console.log(e.stack)
-		})
-		pageProcess.stdout.on('data', data => {
-			console.log('pageProcess:', data.toString())
-		})
-		pageProcess.stderr.on('data', data => {
-			console.log('pageProcess error data--->', data.toString())
-		})
-	}
+	// if (new RegExp('^'+DONE).test(str)) {
+	// 	console.log('开始启动抽奖页面')
+	// 	const pageProcess = childProcess.spawn('npm.cmd', ['run', 'dev'], {
+	// 		cwd: path.resolve(__dirname, './product')
+	// 	})
+	// 	pageProcess.on('error', (e) => {
+	// 		console.log(e.stack)
+	// 	})
+	// 	pageProcess.stdout.on('data', data => {
+	// 		console.log('pageProcess:', data.toString())
+	// 	})
+	// 	pageProcess.stderr.on('data', data => {
+	// 		console.log('pageProcess error data--->', data.toString())
+	// 	})
+	// }
 })
 cp.stderr.on('data', data => {
 	console.log('cp error data===> ', data.toString())

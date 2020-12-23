@@ -158,7 +158,8 @@ function showPrizeList(currentPrizeIndex) {
 //   if (currentPrize.type === defaultType) {
 //     currentPrize.count === "不限制";
 //   }
-  const titleCode = `<div class="prize-mess">正在抽取<label id="prizeType" class="prize-shine">【${currentPrize.text}】</label><label id="prizeText" class="prize-shine prize-shine-blue">${currentPrize.title}</label>，剩余<label id="prizeLeft" class="prize-shine prize-shine-blue">${currentPrize.count}</label>个</div><ul class="prize-list">`;
+// ，剩余<label id="prizeLeft" class="prize-shine prize-shine-blue">${currentPrize.count}</label>个
+  const titleCode = `<div class="prize-mess">正在抽取<label id="prizeType" class="prize-shine">【${currentPrize.text}】</label><label id="prizeText" class="prize-shine prize-shine-blue">${currentPrize.title}</label></div><ul class="prize-list">`;
   let htmlCode = ''
   prizes.forEach(item => {
     // if (item.type === defaultType) {
@@ -171,9 +172,10 @@ function showPrizeList(currentPrizeIndex) {
                             <img src="${item.img}" alt="${item.title}">
                         </div>
                         <div class="prize-text">
-                            <h5 class="prize-title">${item.text} ${
-      item.title
-    }</h5>
+							<h5 class="prize-title">
+								<span class="color-red">【${item.text}】</span>
+								<span>${item.title}</span>
+							</h5>
                             <div class="prize-count">
                                 <div class="progress">
                                     <div id="prize-bar-${
@@ -220,7 +222,7 @@ let setPrizeData = (function() {
 
     if (!prizeElement.prizeType) {
       prizeElement.prizeType = document.querySelector("#prizeType");
-      prizeElement.prizeLeft = document.querySelector("#prizeLeft");
+    //   prizeElement.prizeLeft = document.querySelector("#prizeLeft");
       prizeElement.prizeText = document.querySelector("#prizeText");
     }
 
@@ -258,7 +260,7 @@ let setPrizeData = (function() {
     let percent = (count / totalCount).toFixed(2);
     elements.bar && (elements.bar.style.width = percent * 100 + "%");
     elements.text && (elements.text.textContent = count + "/" + totalCount);
-    prizeElement.prizeLeft.textContent = count;
+    // prizeElement.prizeLeft.textContent = count;
   };
 })();
 
