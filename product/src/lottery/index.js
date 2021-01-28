@@ -650,7 +650,7 @@ function lottery() {
       basicData.leftUsers = basicData.users;
       leftCount = basicData.leftUsers.length;
     }
-
+	console.log('leftCount', leftCount, basicData.leftUsers)
     for (let i = 0; i < perCount; i++) {
       let luckyId = random(leftCount);
       currentLuckys.push(basicData.leftUsers.splice(luckyId, 1)[0]);
