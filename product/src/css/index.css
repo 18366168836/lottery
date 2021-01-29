@@ -63,6 +63,10 @@ a {
     text-align: center;
     cursor: default;
     transition: background-color 0.3s ease-in;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .element:hover {
@@ -71,31 +75,31 @@ a {
 }
 
 .element .company {
-    position: absolute;
+    /* position: absolute; */
     top: 1.2vh;
     right: 0;
-    width: 100%;
+    /* width: 100%; */
     font-size: 3vw;
     color: rgba(127, 255, 255, 0.75);
 }
 
 .element .name {
-    position: absolute;
+    /* position: absolute; */
     top: 4.6vh;
     left: 0;
     right: 0;
-    font-size: 1.2vw;
+    font-size: 2.4vw;
     font-weight: bold;
     color: rgba(255, 255, 255, 0.75);
     text-shadow: 0 0 1vh rgba(0, 255, 255, 0.95);
 }
 
 .element .details {
-    position: absolute;
+    /* position: absolute; */
     bottom: 1.2vh;
     left: 0;
     right: 0;
-    font-size: 0.8vw;
+    font-size: 1.8vw;
     color: rgba(127, 255, 255, 0.75);
 }
 
